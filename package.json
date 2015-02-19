@@ -1,0 +1,24 @@
+{
+  "name": "mean-machine-code",
+  "version": "1.0.0",
+  "description": "Code samples for the JavaScript book: [MEAN Machine](https://leanpub.com/mean-machine)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pTran24/Mean-Machine.git"
+  },
+  "author": "Phong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pTran24/Mean-Machine/issues"
+  },
+  "homepage": "https://github.com/pTran24/Mean-Machine",
+  "dependencies": {
+    "express": "^4.11.2",
+    "mongoose": "^3.8.23",
+    "passport": "^0.2.1"
+  }
+}
