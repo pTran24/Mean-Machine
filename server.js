@@ -6,9 +6,10 @@ var express     = require('express'); // call express
 var app         = express(); // define our app using express;
 var bodyParser  = require('body-parser'); // get body-parser
 var morgan      = require('morgan');
-var mongoose    = require('mongoose'); // fr working w/ our database
+var mongoose    = require('mongoose'); // for working w/ our database
 var port        = process.env.PORT || 1337; //set the port for our app
 var User        = require('./app/models/user');
+var path        = require('path'); // used to join strings for pathing
 
 // APP CONFIGURATION
 // use body parser so we can grab information from POST requests
@@ -23,7 +24,7 @@ app.use(function(req, res, next){
     next();
 });
 
-// connect to our database
+// connect to MONGODB database
 mongoose.connect('mongodb://localhost:27017/myDatabase');
 
 // log all requests to the console
@@ -32,9 +33,10 @@ app.use(morgan('dev'));
 // ROUTES FOR OUR API
 // ================================
 
-// basic route for the home page
+// basic route for the home page http://localhost:1337/
 app.get('/', function(req, res){
-    res.send('Welcome to the home page!');
+    res.sendFile(path.join(__dirname + '/index.html'));
+    // res.send('Welcome to the home page!');
 });
 
 // get an instance of the express router
@@ -54,7 +56,7 @@ apiRouter.route('/users')
         // create a new instance of the User model
         var user = new User();
 
-        // set the user and check for errors
+        // set the users information (comes from the request)
         user.name = req.body.name;
         user.username = req.body.username;
         user.password = req.body.password;
@@ -72,6 +74,7 @@ apiRouter.route('/users')
             res.json({ message: 'User created!' });
         });
     })
+    // retreive user info
     .get(function(req, res){
         User.find(function(err, users){
             if (err) res.send(err);
@@ -82,7 +85,7 @@ apiRouter.route('/users')
     });
 apiRouter.route('/users/:user_id')
     // get the user with that id
-    // (accessed at GET http://localhost:1337/api/usrs/:usr_id)
+    // (accessed at GET http://localhost:1337/api/users/:user_id)
     .get(function(req, res){
         User.findById(req.params.user_id, function(err, user){
             if (err) res.send(err);
@@ -113,11 +116,13 @@ apiRouter.route('/users/:user_id')
             });
         });
     })
+    // delete the user with this id
+    // (accessed at DELETE http://localhost:8080/api/users/:user_id)
     .delete(function(req, res){
         User.remove({
             _id: req.params.user_id
         }, function(err, user){
-            if (err0 return res.send(err);
+            if (err) return res.send(err);
 
             res.json({ message: 'Successfully deleted' });
         });
